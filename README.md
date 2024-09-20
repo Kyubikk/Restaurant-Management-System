@@ -1,6 +1,6 @@
 # README
 
-## GROUP LinhLinh
+## GROUP <add-group-name>
 
 - Member 1: <add-name>
 - Member 2: <add-name>
