@@ -1,6 +1,6 @@
 # README
 
-## GROUP <add-group-name>
+## GROUP 1
 
 - Member 1: DAU TRUC LINH
 - Member 2: NGUYEN THANH BINH
