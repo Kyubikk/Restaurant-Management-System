@@ -6,7 +6,6 @@
 - Member 2: NGUYEN THANH BINH
 - Member 3: TRAN QUE CHI
 - Member 4: TRAN THI KIM NGOC
-- Hihihi
 
 ## Starting server
 
