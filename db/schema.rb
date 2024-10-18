@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_08_130018) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_11_011139) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,33 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_130018) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "category_name"
+    t.string "category_description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dishes", force: :cascade do |t|
+    t.string "name"
+    t.decimal "price"
+    t.string "description"
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_dishes_on_category_id"
+  end
+
+  create_table "disks", force: :cascade do |t|
+    t.string "name"
+    t.decimal "price"
+    t.string "description"
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_disks_on_category_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -80,4 +107,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_130018) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "dishes", "categories"
+  add_foreign_key "disks", "categories"
 end

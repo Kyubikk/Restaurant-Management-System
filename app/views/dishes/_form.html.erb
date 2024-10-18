@@ -1,0 +1,50 @@
+<%= form_with(model: dish) do |form| %>
+  <% if dish.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
+      <h2 class="text-lg font-semibold mb-3">
+        <%= pluralize(dish.errors.count, "error") %> prohibited this dish from being saved:
+      </h2>
+
+      <ul class="list-disc leading-relaxed">
+        <% dish.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Các trường nhập liệu khác -->
+  <div class="mb-6">
+    <%= form.label :name, class: label_class %>
+    <%= form.text_field :name, class: input_class %>
+  </div>
+  
+  <div class="mb-6">
+    <%= form.label :price, class: label_class %>
+    <%= form.text_field :price, class: input_class %>
+  </div>
+  
+  <div class="mb-6">
+    <%= form.label :description, class: label_class %>
+    <%= form.text_field :description, class: input_class %>
+  </div>
+  
+  <div class="mb-6">
+    <%= form.label :category_id, class: label_class %>
+    <%= form.text_field :category_id, class: input_class %>
+  </div>
+
+  <!-- Thêm phần upload ảnh -->
+  <div class="mb-6">
+    <%= form.label :image, "Upload Image", class: label_class %>
+    <%= form.file_field :image, class: input_class %>
+  </div>
+
+  <%= form.submit class: button_class(theme: 'primary') %>
+
+  <% if dish.persisted? %>
+    <%= link_to "Cancel", dish, class: "text-neutral-700 underline inline-block ml-3" %>
+  <% else %>
+    <%= link_to "Cancel", dishes_path, class:  "text-neutral-700 underline inline-block ml-3" %>
+  <% end %>
+<% end %>

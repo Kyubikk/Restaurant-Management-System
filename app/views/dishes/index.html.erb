@@ -1,0 +1,39 @@
+<div class="container mx-auto px-4">
+  <div class="flex items-center justify-between flex-wrap mb-6">
+    <h1 class="text-3xl font-bold">Dishes</h1>
+
+    <%= link_to new_dish_path, class: button_class(theme: "primary") do %>
+    Add New Dish
+    <% end %>
+  </div>
+
+  <table class="table-auto border-collapse border-slate-400 w-full">
+    <thead class="bg-slate-50 dark:bg-slate-700">
+      <tr>
+        <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Name</th>
+        <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Price</th>
+        <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Description</th>
+        <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Category</th>
+        <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Image</th> <!-- Thêm cột ảnh -->
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @dishes.each do |dish| %>
+      <%= content_tag :tr, id: dom_id(dish), class: dom_class(dish) do %>
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to dish.name, dish %></td>
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= dish.price %></td>
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= dish.description %></td>
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= dish.category %></td>
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+          <% if dish.image.attached? %>
+            <%= image_tag dish.image.variant(resize_to_limit: [100, 100]) %> <!-- Hiển thị ảnh -->
+          <% else %>
+            No Image
+          <% end %>
+        </td>
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
