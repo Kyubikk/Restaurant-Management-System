@@ -72,6 +72,8 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    attach (1.0.5)
+      records_manipulator (>= 1.0, < 2.0)
     bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.16.0)
@@ -212,6 +214,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    records_manipulator (1.0.1)
     redis (4.8.1)
     regexp_parser (2.7.0)
     reline (0.3.2)
@@ -282,6 +285,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  attach (~> 1.0.1)
   bootsnap
   capybara
   cssbundling-rails

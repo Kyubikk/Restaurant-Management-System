@@ -1,41 +1,764 @@
-
-
-
 <div class="container mx-auto px-4">
   <div class="flex items-center justify-between flex-wrap mb-6">
-    <h1 class="text-3xl font-bold">Menu_items</h1>
-
+    <h1 class="text-3xl font-bold">Menu Items</h1>
     <%= link_to new_menu_item_path, class: button_class(theme: "primary") do %>
-    Add New Menu item
+      Add
     <% end %>
   </div>
 
-  <table class="table-auto border-collapse border-slate-400 w-full">
-    <thead class="bg-slate-50 dark:bg-slate-700">
-      <tr>
-        
-          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Name</th>
-        
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Price</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Cate</th>
-                
-      </tr>
-    </thead>
-
+  <table class="w-full bg-white rounded-lg shadow-md border-separate border-spacing-8">
     <tbody>
-      <% @menu_items.each do |menu_item| %>
-      <%= content_tag :tr, id: dom_id(menu_item), class: dom_class(menu_item) do %>
-      
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to menu_item.name, menu_item %></td>
-      
-
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= menu_item.price %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= menu_item.cate.cate_name %></td>
-      
-      
-      <% end %>
+      <% @menu_items.each_slice(4) do |menu_item_slice| %> <!-- Chia thành từng nhóm 4 món -->
+        <tr>
+          <% menu_item_slice.each do |menu_item| %> <!-- Hiển thị từng món trong nhóm -->
+            <td class="text-center w-1/4 rounded-lg hover:bg-gray-100 transition-colors duration-200 h-56"> <!-- Tăng chiều cao của ô -->
+              <a href="<%= menu_item_path(menu_item) %>" class="block h-full"> <!-- Bọc nội dung trong thẻ <a> -->
+                <div class="flex flex-col items-center justify-center h-full">
+                  <% if menu_item.image.attached? %>
+                    <%= image_tag menu_item.image, class: "w-32 h-32 object-cover rounded-lg mx-auto", alt: menu_item.name %> <!-- Kích thước hình ảnh và bo góc -->
+                  <% else %>
+                    <div class="w-32 h-32 bg-gray-200 flex items-center justify-center rounded-lg">
+                      <p class="text-gray-500 text-xs">No image uploaded</p>
+                    </div>
+                  <% end %>
+                  <p class="text-sm font-semibold mt-2">
+                    <%= menu_item.name %> <!-- Hiển thị tên món ăn -->
+                  </p>
+                  <p class="text-xs text-gray-600">Category: <%= menu_item.cate.cate_name %></p>
+                  <p class="text-sm font-bold text-slate-900"><%= number_to_currency(menu_item.price) %></p>
+                </div>
+              </a>
+            </td>
+          <% end %>
+          <!-- Nếu nhóm có ít hơn 4 món, tạo ô trống để giữ cho hàng đủ 4 cột -->
+          <% (4 - menu_item_slice.size).times do %>
+            <td></td>
+          <% end %>
+        </tr>
       <% end %>
     </tbody>
   </table>
 </div>
-</div>
+
+<div class="footer__bar">
+      </div>
+
+<footer class="footer" id="contact">
+      <div class="section__container footer__container">
+        <div class="footer__col">
+          <div class="logo footer__logo">
+            <a href="#">Borcelle</a>
+          </div>
+          <p class="section__description">
+            Embark on a gastronomic journey with Borcelle, where every bite tells
+            a story and every dish is crafted to perfection.
+          </p>
+        </div>
+        <div class="footer__col">
+          <h4>Product</h4>
+          <ul class="footer__links">
+            <li><a href="#">Menu</a></li>
+            <li><a href="#">Specials</a></li>
+            <li><a href="#">Meal Deals</a></li>
+            <li><a href="#">Catering Options</a></li>
+            <li><a href="#">Seasonal Offerings</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Information</h4>
+          <ul class="footer__links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Nutrition Information</a></li>
+            <li><a href="#">Allergen Information</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul class="footer__links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bar">
+        Copyright © 2024 Borcelle
+      </div>
+    </footer>
+
+
+<style>
+  /* Đảm bảo mỗi ô có chiều cao lớn hơn và bằng nhau */
+  td {
+    padding: 16px; /* Tăng padding để tạo khoảng cách giữa các nội dung trong ô */
+    vertical-align: top; /* Căn chỉnh nội dung lên trên để giảm khoảng trắng */
+  }
+
+  /* Đảm bảo mỗi hình ảnh có kích thước lớn hơn và bo góc */
+  img {
+    border-radius: 10px; /* Bo góc cho hình ảnh */
+  }
+
+  /* Cấu hình các ô để có cùng kích thước */
+  td {
+    height: 200px; /* Kích thước chiều cao cố định cho các ô */
+    width: 25%; /* Kích thước chiều rộng cho mỗi ô */
+  }
+
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+    :root {
+      --primary-color: #fc7f09;
+      --primary-color-light: #fffcfa;
+      --primary-color-dark: #db6e09;
+      --text-dark: #18181b;
+      --text-light: #6b7280;
+      --white: #ffffff;
+      --max-width: 1200px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .section__container {
+      max-width: var(--max-width);
+      margin: auto;
+      padding: 5rem 1rem;
+    }
+    
+    .section__header {
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 3rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    
+    .section__description {
+      color: var(--text-light);
+      line-height: 1.75rem;
+      text-align: center;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      outline: none;
+      border: none;
+      white-space: nowrap;
+      font-size: 1rem;
+      color: var(--white);
+      background-color: var(--primary-color);
+      border-radius: 10px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-color-dark);
+    }
+    
+    .logo a {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    
+  
+    ul {
+      list-style: none;
+    }
+    
+    html,
+    body {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: "Poppins", sans-serif;
+    }
+    
+    nav {
+      position: fixed;
+      isolation: isolate;
+      width: 100%;
+      z-index: 9;
+    }
+    
+    .nav__header {
+      width: 100%;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--primary-color);
+    }
+    
+    .nav__logo a {
+      color: var(--white);
+    }
+    
+    .nav__menu__btn {
+      font-size: 1.5rem;
+      color: var(--white);
+      cursor: pointer;
+    }
+    
+    .nav__links {
+      position: absolute;
+      top: 68px;
+      left: 0;
+      width: 100%;
+      padding: 2rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+      background-color: var(--primary-color-light);
+      transition: 0.5s;
+      z-index: -1;
+      transform: translateY(-100%);
+    }
+    
+    .nav__links.open {
+      transform: translateY(0);
+    }
+    
+    .nav__links a {
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+    
+    .nav__links a:hover {
+      color: var(--text-dark);
+    }
+    
+    .nav__btn {
+      display: none;
+    }
+    
+    .header__container {
+      display: grid;
+      gap: 2rem;
+      overflow: hidden;
+    }
+    
+    .header__image img {
+      max-width: 600px;
+      margin-inline: auto;
+    }
+    
+    .header__content h1 {
+      margin-bottom: 1rem;
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 4.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    
+    .header__content h1 span {
+      color: var(--primary-color);
+    }
+    
+    .header__content .section__description {
+      margin-bottom: 2rem;
+    }
+    
+    .header__btn {
+      text-align: center;
+    }
+    
+    .special__container :is(.section__header, .section__description) {
+      max-width: 600px;
+      margin-inline: auto;
+    }
+    
+    .special__grid {
+      margin-top: 4rem;
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .special__card {
+      padding: 1rem;
+      text-align: center;
+      border-radius: 2rem;
+      transition: 0.3s;
+    }
+    
+    .special__card:hover {
+      box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .special__card img {
+      max-width: 200px;
+      margin-inline: auto;
+      margin-bottom: 1rem;
+      filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.3));
+    }
+    
+    .special__card h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    
+    .special__card p {
+      margin-bottom: 0.5rem;
+      color: var(--text-light);
+      line-height: 1.75rem;
+    }
+    
+    .special__ratings {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: goldenrod;
+    }
+    
+    .special__footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .special__footer .price {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    
+    .explore__container {
+      display: grid;
+      gap: 2rem;
+      overflow: hidden;
+    }
+    
+    .explore__image img {
+      max-width: 400px;
+      margin-inline: auto;
+      filter: drop-shadow(0 0 50px rgba(252, 127, 9, 0.4));
+    }
+    
+    .explore__content .section__description {
+      margin-bottom: 2rem;
+    }
+    
+    .explore__btn {
+      text-align: center;
+    }
+    
+    .banner__container {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .banner__card {
+      padding: 2rem;
+      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 3rem;
+      transition: 0.3s;
+    }
+    
+    .banner__card:hover {
+      box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .banner__card .banner__icon {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 5px 11px;
+      font-size: 2rem;
+      color: var(--white);
+      border-radius: 1rem;
+    }
+    
+    .banner__card:nth-child(1) .banner__icon {
+      background-color: #62b15c;
+      box-shadow: 5px 5px 30px #62b15cd0;
+    }
+    
+    .banner__card:nth-child(2) .banner__icon {
+      background-color: #ff3e67;
+      box-shadow: 5px 5px 30px #ff3e67d0;
+    }
+    
+    .banner__card:nth-child(3) .banner__icon {
+      background-color: #185adb;
+      box-shadow: 5px 5px 30px #185adbd0;
+    }
+    
+    .banner__card h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    
+    .banner__card p {
+      margin-bottom: 1rem;
+      color: var(--text-light);
+      line-height: 1.75rem;
+    }
+    
+    .banner__card a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 500;
+      color: var(--primary-color);
+    }
+    
+    .banner__card a span {
+      font-size: 1.25rem;
+      transition: 0.3s;
+    }
+    
+    .banner__card a:hover span {
+      transform: translateX(10px);
+    }
+    
+    .chef {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    
+    .chef__bg {
+      position: absolute;
+      z-index: -1;
+      max-width: 275px;
+      left: -4rem;
+      bottom: -2rem;
+    }
+    
+    .chef__container {
+      padding-bottom: 10rem;
+      display: grid;
+      gap: 2rem;
+    }
+    
+    .chef__content .section__description {
+      margin-bottom: 1rem;
+    }
+    
+    .chef__image {
+      position: relative;
+      isolation: isolate;
+    }
+    
+    .chef__image img {
+      max-width: 500px;
+      border-radius: 100%;
+      margin-inline: auto;
+    }
+    
+    .chef__image::after {
+      position: absolute;
+      content: "";
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      width: 100%;
+      max-width: 500px;
+      background-color: var(--primary-color);
+      border-radius: 100%;
+      z-index: -1;
+    }
+    
+    .chef__list {
+      display: grid;
+      gap: 0.5rem;
+    }
+    
+    .chef__list li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    
+    .chef__list li span {
+      font-size: 1.5rem;
+    }
+    
+    .chef__list li:nth-child(1) span {
+      color: #62b15c;
+    }
+    .chef__list li:nth-child(2) span {
+      color: #ff3e67;
+    }
+    .chef__list li:nth-child(3) span {
+      color: #185adb;
+    }
+    
+    .client__container {
+      padding-top: 0;
+    }
+    
+    .client__container :is(.section__header, .section__description) {
+      max-width: 600px;
+      margin-inline: auto;
+      text-align: center;
+    }
+    
+    .client__swiper {
+      margin-top: 2rem;
+      max-width: 750px;
+      margin-inline: auto;
+      padding: 3rem 1rem;
+      overflow: hidden;
+      border: 2px solid rgba(252, 127, 9, 0.5);
+      box-shadow: 5px 5px 30px rgba(252, 127, 9, 0.2);
+      border-radius: 3rem;
+    }
+    
+    .swiper {
+      padding-bottom: 3rem;
+      width: 100%;
+    }
+    
+    .client__card {
+      text-align: center;
+    }
+    
+    .client__card p {
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+      line-height: 1.75rem;
+    }
+    
+    .client__card img {
+      margin-bottom: 1rem;
+      max-width: 70px;
+      margin-inline: auto;
+      border-radius: 100%;
+      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .client__card h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    
+    .client__card h5 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+    
+    .swiper-pagination-bullet-active {
+      background-color: var(--primary-color);
+    }
+    
+    .footer {
+      background-color: var(--primary-color-light);
+    }
+    
+    .footer__container {
+      display: grid;
+      gap: 4rem 2rem;
+    }
+    
+    .footer__logo {
+      margin-bottom: 1rem;
+    }
+    
+    .footer__col .section__description {
+      text-align: left;
+    }
+    
+    .footer__col h4 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    
+    .footer__links {
+      display: grid;
+      gap: 0.75rem;
+    }
+    
+    .footer__links a {
+      color: var(--text-light);
+    }
+    
+    .footer__links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .footer__bar {
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+    
+    @media (width > 540px) {
+      .special__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    
+      .banner__container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    
+      .footer__container {
+        grid-template-columns: 3fr 2fr;
+      }
+    }
+    
+    @media (width > 768px) {
+      nav {
+        position: static;
+        padding: 2rem 1rem;
+        max-width: var(--max-width);
+        margin-inline: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+      }
+    
+      .nav__header {
+        flex: 1;
+        padding: 0;
+        background-color: transparent;
+      }
+    
+      .nav__logo a {
+        color: var(--primary-color);
+      }
+    
+      .nav__menu__btn {
+        display: none;
+      }
+    
+      .nav__links {
+        position: static;
+        padding: 0;
+        flex-direction: row;
+        background-color: transparent;
+        transform: none;
+      }
+    
+      .nav__links a {
+        color: var(--text-dark);
+      }
+    
+      .nav__links a:hover {
+        color: var(--primary-color);
+      }
+    
+      .nav__btn {
+        display: flex;
+        flex: 1;
+      }
+    
+      .nav__btn .btn {
+        padding: 8px 10px;
+        font-size: 1.5rem;
+        border-radius: 100%;
+      }
+    
+      .header__container {
+        grid-template-columns: 2fr 3fr;
+        align-items: center;
+      }
+    
+      .header__content h1,
+      .header__content .section__description,
+      .header__btn {
+        text-align: left;
+      }
+    
+      .header__image {
+        grid-area: 1/2/2/3;
+      }
+    
+      .special__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    
+      .explore__container {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+      }
+    
+      .explore__content .section__header {
+        max-width: 500px;
+      }
+    
+      .explore__content :is(.section__header, .section__description),
+      .explore__btn {
+        text-align: left;
+      }
+    
+      .banner__container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    
+      .chef__bg {
+        max-width: 300px;
+      }
+    
+      .chef__container {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+      }
+    
+      .chef__image {
+        grid-area: 1/2/2/3;
+      }
+    
+      .chef__content :is(.section__header, .section__description) {
+        text-align: left;
+      }
+    
+      .chef__list li {
+        justify-content: flex-start;
+      }
+    
+      .client__swiper {
+        padding: 3rem 2rem;
+      }
+    
+      .footer__container {
+        grid-template-columns: 2fr repeat(3, 1fr);
+      }
+    }
+    
+    @media (width > 1024px) {
+      .special__grid {
+        gap: 2rem;
+      }
+    
+      .special__card {
+        padding: 2rem;
+        border-radius: 3rem;
+      }
+    
+      .banner__container {
+        gap: 2rem;
+      }
+    
+      .chef__bg {
+        max-width: 375px;
+      }
+    }
+    
+</style>

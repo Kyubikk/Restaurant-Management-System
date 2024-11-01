@@ -25,5 +25,13 @@
       <p class="font-semibold">Category:</p>
       <p><%= @menu_item.cate.cate_name %></p> 
     </li>
+    <li>
+      <p class="font-semibold">Image:</p>
+      <% if @menu_item.image.attached? %>
+        <%= image_tag @menu_item.image, style: "width: 200px;" %> <!-- Hiển thị ảnh nếu có -->
+      <% else %>
+        <p>No image uploaded</p> <!-- Thông báo nếu không có ảnh -->
+      <% end %>
+    </li>
   </ul>
 </div>

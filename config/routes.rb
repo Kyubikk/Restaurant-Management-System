@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   # resources :tables
   resources :menu_items
   resources :cates
+  resources :customers
 
   # Devise routes for user authentication
   devise_for :users

@@ -8,7 +8,6 @@ class MenuItemsController < ApplicationController
 
   # GET /menu_items/1 or /menu_items/1.json
   def show
-    @menu_item = MenuItem.includes(:cate).find(params[:id])
   end
 
   # GET /menu_items/new
@@ -66,6 +65,7 @@ class MenuItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def menu_item_params
-      params.require(:menu_item).permit(:name, :price, :cate_id)
+      params.require(:menu_item).permit(:name, :price, :cate_id, :image)
     end
+
 end

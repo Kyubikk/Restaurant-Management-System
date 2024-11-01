@@ -14,4 +14,10 @@
     <%= menu_item.cate_id %>
   </p>
 
+  <p>
+    <% if menu_item.image.attached? %>
+        <%= image_tag(resources.image, style:"width: 100px") %>
+    <% end %>
+  </p>
+
 </div>
