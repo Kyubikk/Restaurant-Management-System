@@ -1,0 +1,34 @@
+<%= form_with(model: table) do |form| %>
+<% if table.errors.any? %>
+<div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
+  <h2 class="text-lg font-semibold mb-3"><%= pluralize(table.errors.count, "error") %> prohibited this table from being saved:</h2>
+
+  <ul class="list-disc leading-relaxed">
+    <% table.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+  <div class="mb-6">
+        <%= form.label :table_number, class: label_class %>
+          <%= form.number_field :table_number, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :seating_capacity, class: label_class %>
+          <%= form.number_field :seating_capacity, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :status, class: label_class %>
+          <%= form.text_field :status, class: input_class %>
+      </div>
+
+<%= form.submit class: button_class(theme: 'primary') %>
+
+<% if table.persisted? %>
+<%= link_to "Cancel", table, class: "text-neutral-700 underline inline-block ml-3" %>
+<% else %>
+<%= link_to "Cancel", tables_path, class:  "text-neutral-700 underline inline-block ml-3" %>
+<% end %>
+<% end %>

@@ -1,0 +1,47 @@
+
+
+
+<div class="container mx-auto px-4">
+  <div class="flex items-center justify-between flex-wrap mb-6">
+    <h1 class="text-3xl font-bold">Reservations</h1>
+
+    <%= link_to new_reservation_path, class: button_class(theme: "primary") do %>
+    Add New Reservation
+    <% end %>
+  </div>
+
+  <table class="table-auto border-collapse border-slate-400 w-full">
+    <thead class="bg-slate-50 dark:bg-slate-700">
+      <tr>
+        
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Customer</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Reservation date</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Number of guests</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Table</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Status</th>
+                
+          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
+        
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @reservations.each do |reservation| %>
+      <%= content_tag :tr, id: dom_id(reservation), class: dom_class(reservation) do %>
+      
+
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= reservation.customer %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= reservation.reservation_date %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= reservation.number_of_guests %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= reservation.table %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= reservation.status %></td>
+      
+      
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', reservation %></td>
+      
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>

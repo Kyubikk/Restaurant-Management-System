@@ -1,0 +1,43 @@
+
+
+
+<div class="container mx-auto px-4">
+  <div class="flex items-center justify-between flex-wrap mb-6">
+    <h1 class="text-3xl font-bold">Feedbacks</h1>
+
+    <%= link_to new_feedback_path, class: button_class(theme: "primary") do %>
+    Add New Feedback
+    <% end %>
+  </div>
+
+  <table class="table-auto border-collapse border-slate-400 w-full">
+    <thead class="bg-slate-50 dark:bg-slate-700">
+      <tr>
+        
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Customer</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Rating</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Comments</th>
+                
+          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
+        
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @feedbacks.each do |feedback| %>
+      <%= content_tag :tr, id: dom_id(feedback), class: dom_class(feedback) do %>
+      
+
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= feedback.customer %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= feedback.rating %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= feedback.comments %></td>
+      
+      
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', feedback %></td>
+      
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>

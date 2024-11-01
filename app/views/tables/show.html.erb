@@ -1,0 +1,29 @@
+<div class="max-w-3xl mx-auto px-4">
+  <div class="flex items-center justify-between">
+    <h1 class="flex-1 font-bold text-3xl">Table</h1>
+
+    <div class="flex-wrap lg:flex items-center lg:space-x-3">
+      <%= link_to tables_path, class: button_class(theme: "transparent") do %>
+      All Tables
+      <% end %>
+      <%= link_to edit_table_path(@table), class: button_class(theme:"primary") do %>
+      Edit
+      <% end %>
+    </div>
+  </div>
+
+  <ul class="text-slate-700">
+      <li>
+        <p class="font-semibold">Table number:</p>
+        <p><%= @table.table_number %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Seating capacity:</p>
+        <p><%= @table.seating_capacity %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Status:</p>
+        <p><%= @table.status %></p>
+      </li>
+  </ul>
+</div>

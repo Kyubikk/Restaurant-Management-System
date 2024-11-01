@@ -1,0 +1,25 @@
+<div class="max-w-3xl mx-auto px-4">
+  <div class="flex items-center justify-between">
+    <h1 class="flex-1 font-bold text-3xl">Cate</h1>
+
+    <div class="flex-wrap lg:flex items-center lg:space-x-3">
+      <%= link_to cates_path, class: button_class(theme: "transparent") do %>
+      All Cates
+      <% end %>
+      <%= link_to edit_cate_path(@cate), class: button_class(theme:"primary") do %>
+      Edit
+      <% end %>
+    </div>
+  </div>
+
+  <ul class="text-slate-700">
+      <li>
+        <p class="font-semibold">Cate name:</p>
+        <p><%= @cate.cate_name %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Description:</p>
+        <p><%= @cate.description %></p>
+      </li>
+  </ul>
+</div>

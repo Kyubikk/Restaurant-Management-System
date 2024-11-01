@@ -1,0 +1,37 @@
+<div class="max-w-3xl mx-auto px-4">
+  <div class="flex items-center justify-between">
+    <h1 class="flex-1 font-bold text-3xl">Reservation</h1>
+
+    <div class="flex-wrap lg:flex items-center lg:space-x-3">
+      <%= link_to reservations_path, class: button_class(theme: "transparent") do %>
+      All Reservations
+      <% end %>
+      <%= link_to edit_reservation_path(@reservation), class: button_class(theme:"primary") do %>
+      Edit
+      <% end %>
+    </div>
+  </div>
+
+  <ul class="text-slate-700">
+      <li>
+        <p class="font-semibold">Customer:</p>
+        <p><%= @reservation.customer %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Reservation date:</p>
+        <p><%= @reservation.reservation_date %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Number of guests:</p>
+        <p><%= @reservation.number_of_guests %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Table:</p>
+        <p><%= @reservation.table %></p>
+      </li>
+      <li>
+        <p class="font-semibold">Status:</p>
+        <p><%= @reservation.status %></p>
+      </li>
+  </ul>
+</div>

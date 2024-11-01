@@ -1,0 +1,37 @@
+<%= form_with(model: menu_item) do |form| %>
+  <% if menu_item.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
+      <h2 class="text-lg font-semibold mb-3">
+        <%= pluralize(menu_item.errors.count, "error") %> prohibited this menu item from being saved:
+      </h2>
+      <ul class="list-disc leading-relaxed">
+        <% menu_item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-6">
+    <%= form.label :name, class: label_class %>
+    <%= form.text_field :name, class: input_class %>
+  </div>
+
+  <div class="mb-6">
+    <%= form.label :price, class: label_class %>
+    <%= form.number_field :price, class: input_class, step: '0.01' %> <!-- Changed to number_field for price -->
+  </div>
+
+  <div class="mb-6">
+    <%= form.label :cate_id, class: label_class %>
+    <%= form.collection_select :cate_id, Cate.all, :id, :cate_name, { prompt: 'Select a Category' }, class: input_class %>
+  </div>
+
+  <%= form.submit "Create Menu Item", class: button_class(theme: 'primary') %> <!-- Added button label -->
+
+  <% if menu_item.persisted? %>
+    <%= link_to "Cancel", menu_item, class: "text-neutral-700 underline inline-block ml-3" %>
+  <% else %>
+    <%= link_to "Cancel", menu_items_path, class: "text-neutral-700 underline inline-block ml-3" %>
+  <% end %>
+<% end %>

@@ -1,0 +1,47 @@
+
+
+
+<div class="container mx-auto px-4">
+  <div class="flex items-center justify-between flex-wrap mb-6">
+    <h1 class="text-3xl font-bold">Orders</h1>
+
+    <%= link_to new_order_path, class: button_class(theme: "primary") do %>
+    Add New Order
+    <% end %>
+  </div>
+
+  <table class="table-auto border-collapse border-slate-400 w-full">
+    <thead class="bg-slate-50 dark:bg-slate-700">
+      <tr>
+        
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Reservation</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Order date</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Staff</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Status</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Total amount</th>
+                
+          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
+        
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @orders.each do |order| %>
+      <%= content_tag :tr, id: dom_id(order), class: dom_class(order) do %>
+      
+
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.reservation %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.order_date %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.staff %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.status %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.total_amount %></td>
+      
+      
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', order %></td>
+      
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>

@@ -1,0 +1,42 @@
+<%= form_with(model: order_item) do |form| %>
+<% if order_item.errors.any? %>
+<div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
+  <h2 class="text-lg font-semibold mb-3"><%= pluralize(order_item.errors.count, "error") %> prohibited this order_item from being saved:</h2>
+
+  <ul class="list-disc leading-relaxed">
+    <% order_item.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+  <div class="mb-6">
+        <%= form.label :order_id, class: label_class %>
+          <%= form.text_field :order_id, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :menu_item_id, class: label_class %>
+          <%= form.text_field :menu_item_id, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :staff_id, class: label_class %>
+          <%= form.text_field :staff_id, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :quantity, class: label_class %>
+          <%= form.number_field :quantity, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :price, class: label_class %>
+          <%= form.text_field :price, class: input_class %>
+      </div>
+
+<%= form.submit class: button_class(theme: 'primary') %>
+
+<% if order_item.persisted? %>
+<%= link_to "Cancel", order_item, class: "text-neutral-700 underline inline-block ml-3" %>
+<% else %>
+<%= link_to "Cancel", order_items_path, class:  "text-neutral-700 underline inline-block ml-3" %>
+<% end %>
+<% end %>
