@@ -3,9 +3,9 @@ class MenuItemsController < ApplicationController
 
   # GET /menu_items or /menu_items.json
   def index
-    @menu_items = MenuItem.all
+    @menu_items = MenuItem.search(params[:term])
   end
-
+  
   # GET /menu_items/1 or /menu_items/1.json
   def show
   end
@@ -67,5 +67,4 @@ class MenuItemsController < ApplicationController
     def menu_item_params
       params.require(:menu_item).permit(:name, :price, :cate_id, :image)
     end
-
 end

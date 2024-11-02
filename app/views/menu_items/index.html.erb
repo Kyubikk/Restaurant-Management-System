@@ -1,28 +1,46 @@
 <div class="container mx-auto px-4">
   <div class="flex items-center justify-between flex-wrap mb-6">
-    <h1 class="text-3xl font-bold">Menu Items</h1>
+    <h1 class="text-3xl font-bold">Borcelle's Menu</h1>
+    
+    <%= form_tag(menu_items_path, method: :get, style: "height: 34px; display: flex; cursor: pointer; padding: 10px 20px; background: #ffff; border-radius: 30px; align-items: center; margin-top: 10px; margin-left: 500px; border: 1px solid #762508;") do %>
+      <div style="display: flex; align-items: center; position: relative;">
+        <%= text_field_tag :term, params[:term], placeholder: "Search ...", style: "width: 300px; outline: none; box-shadow: none; border: none; font-weight: 500; transition: 0.8s; background: transparent;" %>
+        <button type="button" id="clear-search" style="background: none; border: none; cursor: pointer; margin-left: 10px;">
+          <span style="font-size: 18px; color: #762508;">&times;</span>
+        </button>
+        <%= submit_tag 'Search', style: "color: #762508; font-size: 18px; background: none; border: none; cursor: pointer; margin-left: 10px;" %>
+      </div>
+    <% end %>
+
+<script>
+  document.getElementById('clear-search').onclick = function() {
+    document.querySelector('input[name="term"]').value = '';
+    document.querySelector('form').submit();
+  };
+</script>
+    
     <%= link_to new_menu_item_path, class: button_class(theme: "primary") do %>
       Add
     <% end %>
-  </div>
+  </div>    
 
   <table class="w-full bg-white rounded-lg shadow-md border-separate border-spacing-8">
     <tbody>
-      <% @menu_items.each_slice(4) do |menu_item_slice| %> <!-- Chia thành từng nhóm 4 món -->
+      <% @menu_items.each_slice(4) do |menu_item_slice| %> 
         <tr>
-          <% menu_item_slice.each do |menu_item| %> <!-- Hiển thị từng món trong nhóm -->
-            <td class="text-center w-1/4 rounded-lg hover:bg-gray-100 transition-colors duration-200 h-56"> <!-- Tăng chiều cao của ô -->
-              <a href="<%= menu_item_path(menu_item) %>" class="block h-full"> <!-- Bọc nội dung trong thẻ <a> -->
+          <% menu_item_slice.each do |menu_item| %> 
+            <td class="text-center w-1/4 rounded-lg hover:bg-gray-100 transition-colors duration-200 h-56"> 
+              <a href="<%= menu_item_path(menu_item) %>" class="block h-full"> 
                 <div class="flex flex-col items-center justify-center h-full">
                   <% if menu_item.image.attached? %>
-                    <%= image_tag menu_item.image, class: "w-32 h-32 object-cover rounded-lg mx-auto", alt: menu_item.name %> <!-- Kích thước hình ảnh và bo góc -->
+                    <%= image_tag menu_item.image, class: "w-32 h-32 object-cover rounded-lg mx-auto", alt: menu_item.name %> 
                   <% else %>
                     <div class="w-32 h-32 bg-gray-200 flex items-center justify-center rounded-lg">
                       <p class="text-gray-500 text-xs">No image uploaded</p>
                     </div>
                   <% end %>
                   <p class="text-sm font-semibold mt-2">
-                    <%= menu_item.name %> <!-- Hiển thị tên món ăn -->
+                    <%= menu_item.name %> 
                   </p>
                   <p class="text-xs text-gray-600">Category: <%= menu_item.cate.cate_name %></p>
                   <p class="text-sm font-bold text-slate-900"><%= number_to_currency(menu_item.price) %></p>
@@ -30,7 +48,6 @@
               </a>
             </td>
           <% end %>
-          <!-- Nếu nhóm có ít hơn 4 món, tạo ô trống để giữ cho hàng đủ 4 cột -->
           <% (4 - menu_item_slice.size).times do %>
             <td></td>
           <% end %>
@@ -90,21 +107,17 @@
 
 
 <style>
-  /* Đảm bảo mỗi ô có chiều cao lớn hơn và bằng nhau */
   td {
-    padding: 16px; /* Tăng padding để tạo khoảng cách giữa các nội dung trong ô */
-    vertical-align: top; /* Căn chỉnh nội dung lên trên để giảm khoảng trắng */
+    padding: 16px; 
+    vertical-align: top;
   }
-
-  /* Đảm bảo mỗi hình ảnh có kích thước lớn hơn và bo góc */
   img {
-    border-radius: 10px; /* Bo góc cho hình ảnh */
+    border-radius: 10px;
   }
 
-  /* Cấu hình các ô để có cùng kích thước */
   td {
-    height: 200px; /* Kích thước chiều cao cố định cho các ô */
-    width: 25%; /* Kích thước chiều rộng cho mỗi ô */
+    height: 200px; 
+    width: 25%;
   }
 
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
