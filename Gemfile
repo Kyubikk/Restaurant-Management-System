@@ -79,3 +79,4 @@ gem "dotenv-rails"
 gem "rails_admin"
 gem "sassc-rails"
 gem 'attach', '~> 1.0.1'
+gem "chartkick"

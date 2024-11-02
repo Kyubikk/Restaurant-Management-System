@@ -10,6 +10,10 @@
     <% end %>
   </div>
 
+  <%= line_chart Customer.group_by_day(:created_at).count %>
+
+  
+
   <table class="table-auto border-collapse border-slate-400 w-full">
     <thead class="bg-slate-50 dark:bg-slate-700">
       <tr>
