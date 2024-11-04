@@ -3,9 +3,9 @@
 ## GROUP GROUP-1
 
 - Member 1: DAU TRUC LINH
-- Member 2: NGUYEN THANH BINH
+- Member 2: TRAN THI KIM NGOC
 - Member 3: TRAN QUE CHI
-- Member 4: TRAN THI KIM NGOC
+- Member 4: NGUYEN THANH BINH
 
 ## Starting server
 
