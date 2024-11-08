@@ -3,8 +3,12 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   # Mounting RailsAdmin only once
   authenticate :user, ->(u) { u.admin? } do
-    resources :tables
+    # resources :tables
     mount Sidekiq::Web => '/sidekiq'
+  end
+
+  authenticate :user do
+    resources :tables
   end
 
   # Resource routes

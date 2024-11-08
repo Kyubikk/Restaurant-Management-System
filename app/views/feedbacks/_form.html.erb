@@ -24,7 +24,7 @@
           <%= form.text_area :comments, class: input_class %>
       </div>
 
-<%= form.submit class: button_class(theme: 'primary') %>
+<%= form.submit class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" %>
 
 <% if feedback.persisted? %>
 <%= link_to "Cancel", feedback, class: "text-neutral-700 underline inline-block ml-3" %>

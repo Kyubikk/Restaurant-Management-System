@@ -6,7 +6,7 @@
       <%= link_to tables_path, class: button_class(theme: "transparent") do %>
       All Tables
       <% end %>
-      <%= link_to edit_table_path(@table), class: button_class(theme:"primary") do %>
+      <%= link_to edit_table_path(@table), class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
       Edit
       <% end %>
     </div>

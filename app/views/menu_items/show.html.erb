@@ -4,7 +4,7 @@
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
       <%= link_to "All Menu Items", menu_items_path, class: button_class(theme: "transparent") %>
-      <%= link_to "Edit", edit_menu_item_path(@menu_item), class: button_class(theme: "primary") %>
+      <%= link_to "Edit", edit_menu_item_path(@menu_item), class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';"%>
     </div>
   </div>
 

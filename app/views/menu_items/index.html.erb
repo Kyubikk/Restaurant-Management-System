@@ -19,9 +19,9 @@
   };
 </script>
     
-    <%= link_to new_menu_item_path, class: button_class(theme: "primary") do %>
-      Add
-    <% end %>
+  <%= link_to new_menu_item_path, class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
+  Add
+<% end %>
   </div>    
 
   <table class="w-full bg-white rounded-lg shadow-md border-separate border-spacing-8">
