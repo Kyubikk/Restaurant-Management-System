@@ -1,44 +1,47 @@
 <%= form_with(model: reservation) do |form| %>
-<% if reservation.errors.any? %>
-<div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
-  <h2 class="text-lg font-semibold mb-3"><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
-
-  <ul class="list-disc leading-relaxed">
-    <% reservation.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
-    <% end %>
-  </ul>
-</div>
-<% end %>
-
-  <div class="mb-6">
-  <%= form.label :customer_id, "Customer", class: label_class %>
-  <%= form.select :customer_id, options_for_select(Customer.all.map { |c| [ "#{c.first_name} #{c.last_name}", c.id ] }, selected: @reservation.customer_id), { prompt: 'Select a Customer' }, class: input_class %>
-</div>
-
+  <% if reservation.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
+      <h2 class="text-lg font-semibold mb-3"><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+      <ul class="list-disc leading-relaxed">
+        <% reservation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <div class="mb-6">
-        <%= form.label :reservation_date, class: label_class %>
-          <%= form.datetime_field :reservation_date, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :number_of_guests, class: label_class %>
-          <%= form.number_field :number_of_guests, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :table_id, class: label_class %>
-          <%= form.text_field :table_id, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :status, class: label_class %>
-          <%= form.text_field :status, class: input_class %>
-      </div>
+    <%= form.label :customer_id, "Customer", class: label_class %>
+    <%= form.select :customer_id, 
+          options_for_select(Customer.all.map { |c| ["#{c.first_name} #{c.last_name}", c.id] }, selected: @reservation.customer_id), 
+          { prompt: "Select a Customer" }, 
+          class: input_class %>
+  </div>
 
-<%= form.submit class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" %>
+  <div class="mb-6">
+    <%= form.label :reservation_date, "Reservation Date & Time", class: label_class %>
+    <%= form.datetime_field :reservation_date, class: input_class %>
+  </div>
 
-<% if reservation.persisted? %>
-<%= link_to "Cancel", reservation, class: "text-neutral-700 underline inline-block ml-3" %>
-<% else %>
-<%= link_to "Cancel", reservations_path, class:  "text-neutral-700 underline inline-block ml-3" %>
-<% end %>
+  <div class="mb-6">
+    <%= form.label :number_of_guests, "Number of Guests", class: label_class %>
+    <%= form.number_field :number_of_guests, class: input_class, min: 1 %>
+  </div>
+
+  <div class="mb-6">
+    <%= form.label :table_id, "Table", class: label_class %>
+    <%= form.select :table_id, 
+          options_for_select(Table.where(status: 'available').map { |t| ["Table ##{t.table_number} (Capacity: #{t.seating_capacity})", t.id] }, selected: @reservation.table_id), 
+          { prompt: "Select a Table" }, 
+          class: input_class %>
+  </div>
+
+  <%= form.submit "Save Reservation", 
+        class: "px-4 py-2 rounded font-semibold", 
+        style: "background-color: #762508; color: #FFFFFF;", 
+        onmouseover: "this.style.background = '#F29F05';", 
+        onmouseout: "this.style.background = '#762508';" %>
+
+  <%= link_to "Cancel", reservations_path, 
+        class: "ml-4 text-neutral-700 underline inline-block" %>
 <% end %>

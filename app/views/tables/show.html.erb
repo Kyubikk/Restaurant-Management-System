@@ -1,29 +1,41 @@
 <div class="max-w-3xl mx-auto px-4">
   <div class="flex items-center justify-between">
-    <h1 class="flex-1 font-bold text-3xl">Table</h1>
+    <h1 class="flex-1 font-bold text-3xl" style="color: #762508;">Table</h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
-      <%= link_to tables_path, class: button_class(theme: "transparent") do %>
-      All Tables
+      <!-- Nút "All Tables" -->
+      <%= link_to tables_path, 
+            class: "px-4 py-2 rounded font-semibold", 
+            style: "background-color: #f6e4c5; color: #762508; border: 2px solid #c6a361;", 
+            onmouseover: "this.style.background = '#f07422'; this.style.color = '#fefefe';", 
+            onmouseout: "this.style.background = '#f6e4c5'; this.style.color = '#762508';" do %>
+        All Tables
       <% end %>
-      <%= link_to edit_table_path(@table), class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
-      Edit
+      
+      <!-- Nút "Edit" -->
+      <%= link_to edit_table_path(@table), 
+            class: "px-4 py-2 rounded font-semibold", 
+            style: "background-color: #762508; color: #FFFFFF; border: 2px solid #c6a361;", 
+            onmouseover: "this.style.background = '#f07422'; this.style.color = '#fefefe';", 
+            onmouseout: "this.style.background = '#762508'; this.style.color = '#FFFFFF';" do %>
+        Edit
       <% end %>
     </div>
   </div>
 
-  <ul class="text-slate-700">
-      <li>
-        <p class="font-semibold">Table number:</p>
-        <p><%= @table.table_number %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Seating capacity:</p>
-        <p><%= @table.seating_capacity %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Status:</p>
-        <p><%= @table.status %></p>
-      </li>
+  <!-- Thông tin chi tiết bàn -->
+  <ul class="text-slate-700 mt-6">
+    <li>
+      <p class="font-semibold" style="color: #762508;">Table number:</p>
+      <p style="color: #c6a361;"><%= @table.table_number %></p>
+    </li>
+    <li>
+      <p class="font-semibold" style="color: #762508;">Seating capacity:</p>
+      <p style="color: #c6a361;"><%= @table.seating_capacity %></p>
+    </li>
+    <li>
+      <p class="font-semibold" style="color: #762508;">Status:</p>
+      <p style="color: #c6a361;"><%= @table.status.capitalize %></p>
+    </li>
   </ul>
 </div>

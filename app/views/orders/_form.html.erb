@@ -1,42 +1,83 @@
-<%= form_with(model: order) do |form| %>
-<% if order.errors.any? %>
-<div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
-  <h2 class="text-lg font-semibold mb-3"><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+<div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+  <h1 class="text-2xl font-bold mb-6 text-center" style="color: #762508;">New Order</h1>
 
-  <ul class="list-disc leading-relaxed">
-    <% order.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
+  <%= form_with(model: order, local: true) do |form| %>
+    <% if order.errors.any? %>
+      <div id="error_explanation" class="bg-red-50 p-4 rounded-lg text-red-800 mb-6">
+        <h2 class="text-lg font-semibold"><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+        <ul class="list-disc ml-6 mt-2">
+          <% order.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
-  </ul>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <%= form.label :reservation_id, "Reservation", class: "block text-gray-700 font-medium mb-2" %>
+        <%= form.select :reservation_id, 
+              options_for_select(Reservation.all.map { |r| ["Reservation ##{r.id} (Table ##{r.table.table_number})", r.id] }, selected: order.reservation_id), 
+              { prompt: "Select a Reservation" }, 
+              class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      </div>
+
+      <div>
+        <%= form.label :staff_id, "Staff", class: "block text-gray-700 font-medium mb-2" %>
+        <%= form.select :staff_id, 
+              options_for_select(Staff.all.map { |s| ["#{s.first_name} #{s.last_name}", s.id] }, selected: order.staff_id), 
+              { prompt: "Select a Staff" }, 
+              class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :order_date, "Order Date", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.datetime_field :order_date, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-3" style="color: #762508;">Order Items</h3>
+      <div id="order-items-list">
+        <%= form.fields_for :order_items do |item_fields| %>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4">
+            <div>
+              <%= item_fields.label :menu_item_id, "Menu Item", class: "block text-gray-700 font-medium mb-1" %>
+              <%= item_fields.select :menu_item_id, 
+                    options_for_select(MenuItem.all.map { |m| ["#{m.name} - $#{m.price}", m.id] }), 
+                    { prompt: "Select Menu Item" }, 
+                    class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+            </div>
+            <div>
+              <%= item_fields.label :quantity, "Quantity", class: "block text-gray-700 font-medium mb-1" %>
+              <%= item_fields.number_field :quantity, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300", min: 1 %>
+            </div>
+            <div>
+              <%= item_fields.label :price, "Price ($)", class: "block text-gray-700 font-medium mb-1" %>
+              <%= item_fields.text_field :price, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300", readonly: true %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "Add Item", "#", id: "add-order-item", class: "text-blue-500 hover:underline text-sm mt-3 inline-block" %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :total_amount, "Total Amount ($)", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.text_field :total_amount, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300", readonly: true, value: order.total_amount, id: "total_amount" %>
+    </div>
+
+    <div class="flex justify-end space-x-6"> 
+      <%= form.submit "Save Order", 
+          class: "px-4 py-2 rounded font-semibold", 
+          style: "background-color: #762508; color: #FFFFFF;", 
+          onmouseover: "this.style.background = '#F29F05';", 
+          onmouseout: "this.style.background = '#762508';" %>
+    </div>
+
+    <div class="flex justify-end space-x-6"> 
+      <%= link_to "Cancel", orders_path, class: "text-neutral-700 underline inline-block" %>
+    </div>
+  
+  <% end %>
 </div>
-<% end %>
-
-  <div class="mb-6">
-        <%= form.label :reservation_id, class: label_class %>
-          <%= form.text_field :reservation_id, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :order_date, class: label_class %>
-          <%= form.datetime_field :order_date, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :staff_id, class: label_class %>
-          <%= form.text_field :staff_id, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :status, class: label_class %>
-          <%= form.text_field :status, class: input_class %>
-      </div>
-  <div class="mb-6">
-        <%= form.label :total_amount, class: label_class %>
-          <%= form.text_field :total_amount, class: input_class %>
-      </div>
-
-<%= form.submit class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';"%>
-
-<% if order.persisted? %>
-<%= link_to "Cancel", order, class: "text-neutral-700 underline inline-block ml-3" %>
-<% else %>
-<%= link_to "Cancel", orders_path, class:  "text-neutral-700 underline inline-block ml-3" %>
-<% end %>
-<% end %>

@@ -1,5 +1,5 @@
 class TablesController < ApplicationController
-  before_action :set_table, only: %i[ show edit update destroy ]
+  before_action :set_table, only: %i[show edit update destroy reserve check_in checkout]
 
   # GET /tables or /tables.json
   def index
@@ -57,14 +57,55 @@ class TablesController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_table
-      @table = Table.find(params[:id])
+  # POST /tables/:id/reserve
+  def reserve
+    if @table.available?
+      @reservation = @table.build_reservation(
+        customer_name: params[:customer_name],
+        reserved_from: params[:reserved_from],
+        reserved_to: params[:reserved_to]
+      )
+      if @reservation.save
+        @table.update(status: 'reserved')
+        redirect_to @table, notice: 'Table successfully reserved!'
+      else
+        redirect_to @table, alert: 'Failed to reserve table. Please check the details.'
+      end
+    else
+      redirect_to @table, alert: 'Table is not available for reservation.'
     end
+  end
 
-    # Only allow a list of trusted parameters through.
-    def table_params
-      params.require(:table).permit(:table_number, :seating_capacity, :status)
+  # POST /tables/:id/check_in
+  def check_in
+    if @table.reserved? || @table.available?
+      @table.update(status: 'occupied')
+      Order.create(table_id: @table.id, status: 'open')
+      redirect_to @table, notice: 'Customer successfully checked in!'
+    else
+      redirect_to @table, alert: 'Table is already occupied.'
     end
+  end
+
+  # POST /tables/:id/checkout
+  def checkout
+    @order = @table.current_order
+    if @order
+      @order.update(status: 'paid')
+      @table.update(status: 'available')
+      redirect_to @table, notice: 'Checkout completed successfully!'
+    else
+      redirect_to @table, alert: 'No active order found for this table.'
+    end
+  end
+
+  private
+
+  def set_table
+    @table = Table.find(params[:id])
+  end
+
+  def table_params
+    params.require(:table).permit(:table_number, :seating_capacity, :status)
+  end
 end

@@ -8,6 +8,8 @@ class MenuItemsController < ApplicationController
   
   # GET /menu_items/1 or /menu_items/1.json
   def show
+    @menu_item = MenuItem.find(params[:id])
+    render json: { price: @menu_item.price }
   end
 
   # GET /menu_items/new

@@ -1,43 +1,43 @@
-
-
-
 <div class="container mx-auto px-4">
   <div class="flex items-center justify-between flex-wrap mb-6">
-    <h1 class="text-3xl font-bold">Tables</h1>
+    <h1 class="text-3xl font-bold" style="color: #762508;">Tables</h1>
 
-    <%= link_to new_table_path, class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
-    Add New Table
+    <%= link_to new_table_path, 
+          class: "px-4 py-2 rounded font-semibold", 
+          style: "background-color: #762508; color: #FFFFFF; border: 2px solid #c6a361;", 
+          onmouseover: "this.style.background = '#F29F05'; this.style.color = '#FFFFFF';", 
+          onmouseout: "this.style.background = '#762508'; this.style.color = '#FFFFFF';" do %>
+      Add New Table
     <% end %>
   </div>
 
-  <table class="table-auto border-collapse border-slate-400 w-full">
-    <thead class="bg-slate-50 dark:bg-slate-700">
+  <table class="table-auto border-collapse w-full">
+    <thead style="background-color: #f6e4c5;">
       <tr>
-        
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Table number</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Seating capacity</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Status</th>
-                
-          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
-        
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Table number</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Seating capacity</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Status</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Actions</th>
       </tr>
     </thead>
 
     <tbody>
-      <% @tables.each do |table| %>
-      <%= content_tag :tr, id: dom_id(table), class: dom_class(table) do %>
-      
-
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= table.table_number %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= table.seating_capacity %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= table.status %></td>
-      
-      
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', table %></td>
-      
-      <% end %>
+      <% @tables.each_with_index do |table, index| %>
+        <% row_bg_color = index.even? ? "#FFFFFF" : "#fefefe" %>
+        <tr style="background-color: <%= row_bg_color %>;" 
+            class="hover:bg-[#f9ebd2] transition-colors duration-200">
+          <td class="border border-slate-300 p-4 text-center text-[#762508]"><%= table.table_number %></td>
+          <td class="border border-slate-300 p-4 text-center text-[#762508]"><%= table.seating_capacity %></td>
+          <td class="border border-slate-300 p-4 text-center text-[#762508]"><%= table.status.capitalize %></td>
+          <td class="border border-slate-300 p-4 text-center">
+            <%= link_to 'Show', table, 
+                  class: "px-4 py-2 rounded font-semibold", 
+                  style: "background-color: #f07422; color: #FFFFFF; border: 2px solid #c6a361;", 
+                  onmouseover: "this.style.background = '#F29F05'; this.style.color = '#FFFFFF';", 
+                  onmouseout: "this.style.background = '#f07422'; this.style.color = '#FFFFFF';" %>
+          </td>
+        </tr>
       <% end %>
     </tbody>
   </table>
-</div>
 </div>

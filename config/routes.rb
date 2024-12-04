@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   end
 
   authenticate :user do
-    resources :tables
+    # resources :tables
   end
 
   # Resource routes
@@ -20,6 +20,11 @@ Rails.application.routes.draw do
   resources :menu_items
   resources :cates
   resources :customers
+  resources :tables
+  # routes.rb
+  resources :menu_items, only: [:show]
+
+  
 
   # Devise routes for user authentication
   devise_for :users

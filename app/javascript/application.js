@@ -5,3 +5,4 @@ import "@rails/actiontext";
 import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns";
 import "chartkick/chart.js";
+import "./order_items";

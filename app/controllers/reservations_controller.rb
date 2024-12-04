@@ -1,9 +1,9 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: %i[ show edit update destroy ]
+  before_action :set_reservation, only: %i[show edit update destroy]
 
   # GET /reservations or /reservations.json
   def index
-    @reservations = Reservation.all
+    @reservations = Reservation.includes(:customer, :table).all
   end
 
   # GET /reservations/1 or /reservations/1.json
@@ -22,12 +22,15 @@ class ReservationsController < ApplicationController
   # POST /reservations or /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
+    table = @reservation.table
 
     respond_to do |format|
-      if @reservation.save
+      if table.available? && @reservation.save
+        table.update(status: 'reserved') # Cập nhật trạng thái bàn
         format.html { redirect_to reservation_url(@reservation), notice: "Reservation was successfully created." }
         format.json { render :show, status: :created, location: @reservation }
       else
+        @reservation.errors.add(:table_id, "is not available") unless table.available?
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
@@ -49,7 +52,11 @@ class ReservationsController < ApplicationController
 
   # DELETE /reservations/1 or /reservations/1.json
   def destroy
+    table = @reservation.table
     @reservation.destroy
+
+    # Chuyển trạng thái bàn về "available" nếu hủy đặt chỗ
+    table.update(status: 'available') if table.reserved?
 
     respond_to do |format|
       format.html { redirect_to reservations_url, notice: "Reservation was successfully destroyed." }
@@ -58,13 +65,12 @@ class ReservationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_reservation
-      @reservation = Reservation.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def reservation_params
-      params.require(:reservation).permit(:customer_id, :reservation_date, :number_of_guests, :table_id, :status)
-    end
+  def set_reservation
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def reservation_params
+    params.require(:reservation).permit(:customer_id, :reservation_date, :number_of_guests, :table_id, :status)
+  end
 end

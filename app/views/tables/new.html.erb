@@ -1,5 +1,38 @@
 <div class="max-w-3xl mx-auto px-4">
-  <h1 class="font-bold text-3xl mb-6">New table</h1>
+  <h1 class="font-bold text-3xl mb-6" style="color: #762508;">Create a New Table</h1>
 
-  <%= render 'form', table: @table %>
+  <%= form_with model: @table, local: true do |form| %>
+    <!-- Table number -->
+    <div class="mb-4">
+      <%= form.label :table_number, "Table number", class: "block font-semibold mb-2", style: "color: #762508;" %>
+      <%= form.number_field :table_number, 
+            class: "border rounded w-full py-2 px-3", 
+            style: "border-color: #c6a361; background-color: #fefefe; color: #762508;", 
+            placeholder: "Enter table number (e.g., 2, 3, 4)", 
+            min: 2 %>
+    </div>
+
+    <!-- Seating capacity -->
+    <div class="mb-4">
+      <%= form.label :seating_capacity, "Seating capacity", class: "block font-semibold mb-2", style: "color: #762508;" %>
+      <%= form.select :seating_capacity, 
+            options_for_select([2, 4, 6, 8], @table.seating_capacity), 
+            class: "border rounded w-full py-2 px-3", 
+            style: "border-color: #c6a361; background-color: #fefefe; color: #762508;" %>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex items-center space-x-4">
+      <%= form.submit "Create Table", 
+            class: "px-4 py-2 rounded font-semibold", 
+            style: "background-color: #762508; color: #fefefe; border: 2px solid #c6a361;", 
+            onmouseover: "this.style.backgroundColor='#f07422'; this.style.color='#fefefe';", 
+            onmouseout: "this.style.backgroundColor='#762508'; this.style.color='#fefefe';" %>
+      <%= link_to "Cancel", tables_path, 
+            class: "px-4 py-2 rounded font-semibold", 
+            style: "background-color: #f6e4c5; color: #762508; border: 2px solid #c6a361;", 
+            onmouseover: "this.style.backgroundColor='#f07422'; this.style.color='#fefefe';", 
+            onmouseout: "this.style.backgroundColor='#f6e4c5'; this.style.color='#762508';" %>
+    </div>
+  <% end %>
 </div>

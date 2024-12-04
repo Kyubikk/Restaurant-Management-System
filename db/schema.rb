@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_03_043119) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_04_160119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,9 +52,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_043119) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "attachments", force: :cascade do |t|
+    t.string "attachable_type", null: false
+    t.bigint "attachable_id", null: false
+    t.string "file_name"
+    t.string "file_type"
+    t.binary "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "owner_id"
+    t.index ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable"
+    t.index ["owner_id"], name: "index_attachments_on_owner_id"
+  end
+
   create_table "categories", force: :cascade do |t|
-    t.string "category_name"
-    t.string "category_description"
+    t.string "cate_name"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -73,26 +86,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_043119) do
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "dishes", force: :cascade do |t|
-    t.string "name"
-    t.decimal "price"
-    t.string "description"
-    t.bigint "category_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_dishes_on_category_id"
-  end
-
-  create_table "disks", force: :cascade do |t|
-    t.string "name"
-    t.decimal "price"
-    t.string "description"
-    t.bigint "category_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_disks_on_category_id"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -121,6 +114,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_043119) do
     t.bigint "cate_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "cover_photo_data"
     t.index ["cate_id"], name: "index_menu_items_on_cate_id"
   end
 
@@ -145,6 +139,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_043119) do
     t.decimal "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "table_id"
     t.index ["reservation_id"], name: "index_orders_on_reservation_id"
     t.index ["staff_id"], name: "index_orders_on_staff_id"
   end
@@ -195,8 +190,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_03_043119) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "dishes", "categories"
-  add_foreign_key "disks", "categories"
   add_foreign_key "feedbacks", "customers"
   add_foreign_key "menu_items", "cates"
   add_foreign_key "order_items", "menu_items"
