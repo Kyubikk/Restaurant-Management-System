@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :cates
   resources :customers
   resources :tables
+  resources :dashboards, only: [:index]
   # routes.rb
   resources :menu_items, only: [:show]
 

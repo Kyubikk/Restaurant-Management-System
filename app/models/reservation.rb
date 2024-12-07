@@ -1,6 +1,7 @@
 class Reservation < ApplicationRecord
   belongs_to :customer
   belongs_to :table
+  has_one :order  # Một Reservation có thể có 1 Order
 
   # Validate số lượng khách không vượt quá sức chứa bàn
   validates :number_of_guests, numericality: { greater_than: 0 }

@@ -1,37 +1,75 @@
 <div class="max-w-3xl mx-auto px-4">
+  <!-- Header Section -->
   <div class="flex items-center justify-between">
-    <h1 class="flex-1 font-bold text-3xl">Reservation</h1>
+    <h1 class="flex-1 font-bold text-3xl" style="color: #762508;">New Reservation</h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
-      <%= link_to reservations_path, class: button_class(theme: "transparent") do %>
-      All Reservations
-      <% end %>
-      <%= link_to edit_reservation_path(@reservation), class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
-      Edit
+      <%= link_to reservations_path, 
+            class: button_class(theme: "transparent"), 
+            style: "color: #762508; border: 2px solid #762508; padding: 8px 16px; border-radius: 4px;" do %>
+        All Reservations
       <% end %>
     </div>
   </div>
 
-  <ul class="text-slate-700">
-      <li>
-        <p class="font-semibold">Customer:</p>
-        <p><%= @reservation.customer %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Reservation date:</p>
-        <p><%= @reservation.reservation_date %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Number of guests:</p>
-        <p><%= @reservation.number_of_guests %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Table:</p>
-        <p><%= @reservation.table %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Status:</p>
-        <p><%= @reservation.status %></p>
-      </li>
-  </ul>
+  <div class="my-6 p-4">
+  </div>
+
+  <!-- Form Section -->
+  <div class="my-6 p-4 border rounded-lg shadow-lg" style="background-color: #f6e4c5; border-color: #c6a361;">
+    <%= form_with(model: @reservation, local: true) do |form| %>
+      <% if @reservation.errors.any? %>
+        <div id="error_explanation" class="bg-red-50 p-4 rounded-lg text-red-800 mb-6">
+          <h2 class="text-lg font-semibold"><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+          <ul class="list-disc ml-6 mt-2">
+            <% @reservation.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Customer Info -->
+      <div class="mb-6">
+        <%= form.label :customer_id, "Customer", class: "block text-gray-700 font-medium mb-2", style: "color: #762508;" %>
+        <%= form.select :customer_id, 
+              options_for_select(Customer.all.map { |c| ["#{c.first_name} #{c.last_name}", c.id] }, selected: @reservation.customer_id), 
+              { prompt: "Select a Customer" }, 
+              class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      </div>
+
+      <!-- Reservation Date -->
+      <div class="mb-6">
+        <%= form.label :reservation_date, "Reservation Date", class: "block text-gray-700 font-medium mb-2", style: "color: #762508;" %>
+        <%= form.datetime_field :reservation_date, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      </div>
+
+      <!-- Number of Guests -->
+      <div class="mb-6">
+        <%= form.label :number_of_guests, "Number of Guests", class: "block text-gray-700 font-medium mb-2", style: "color: #762508;" %>
+        <%= form.number_field :number_of_guests, min: 1, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      </div>
+
+      <!-- Table -->
+      <div class="mb-6">
+        <%= form.label :table_id, "Table", class: "block text-gray-700 font-medium mb-2", style: "color: #762508;" %>
+        <%= form.select :table_id, 
+              options_for_select(Table.all.map { |t| ["Table ##{t.table_number}", t.id] }, selected: @reservation.table_id), 
+              { prompt: "Select a Table" }, 
+              class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      </div>
+
+      <!-- Submit and Cancel Buttons -->
+      <div class="flex justify-between items-center mt-6">
+      <%= form.submit "Save Reservation", 
+            class: "px-4 py-2 rounded font-semibold", 
+            style: "background-color: #762508; color: #FFFFFF;", 
+            onmouseover: "this.style.background = '#f07422';", 
+            onmouseout: "this.style.background = '#762508';" %>
+      <%= link_to "Cancel", reservations_path, 
+            class: "text-neutral-700 underline inline-block", 
+            style: "margin-left: auto;" %>
+      </div>    
+    <% end %>
+  </div>
 </div>

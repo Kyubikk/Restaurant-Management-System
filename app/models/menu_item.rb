@@ -6,6 +6,7 @@ class MenuItem < ApplicationRecord
   validates :cate, presence: true
 
   has_one_attached :image
+  has_many :order_items
 
   # Thêm phương thức tìm kiếm
   def self.search(term)

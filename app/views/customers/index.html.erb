@@ -1,50 +1,57 @@
 <div class="container mx-auto px-4">
+  <!-- Header -->
   <div class="flex items-center justify-between flex-wrap mb-6">
-    <h1 class="text-3xl font-bold">Customers</h1>
+    <h1 class="text-3xl font-bold" style="color: #762508;">Customers</h1>
 
-    <%= link_to new_customer_path, class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
-    Add New Customer
+    <%= link_to new_customer_path, 
+          class: "px-4 py-2 rounded font-semibold", 
+          style: "background-color: #762508; color: #FFFFFF; border: 2px solid #c6a361;", 
+          onmouseover: "this.style.background = '#F29F05';", 
+          onmouseout: "this.style.background = '#762508';" do %>
+      Add New Customer
     <% end %>
   </div>
 
+  <!-- Chart -->
+  <div class="mb-6" data-turbo="false">
+    <%= line_chart Customer.where(created_at: 120.days.ago..Time.current).group_by_day(:created_at).count, 
+          height: "400px", 
+          width: "100%", 
+          colors: ["#762508", "#f6e4c5", "#c6a361", "#fefefe", "#f07422"] %>
+  </div>
 
-      <div class="mb-6" data-turbo="false">
-      <%= line_chart Customer.where(created_at: 30.days.ago..Time.current).group_by_day(:created_at).count, 
-        height: "400px", 
-        width: "100%", 
-        colors: ["#762508", "#f6e4c5", "#c6a361", "#fefefe", "#f07422"] %>
-    </div>
-
-  <table class="table-auto border-collapse border-slate-400 w-full">
-    <thead class="bg-slate-50 dark:bg-slate-700">
+  <!-- Table -->
+  <table class="table-auto border-collapse w-full">
+    <thead style="background-color: #f6e4c5;">
       <tr>
-        
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">First name</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Last name</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Email</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Phone number</th>
-                
-          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
-        
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">First Name</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Last Name</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Email</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Phone Number</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Actions</th>
       </tr>
     </thead>
 
     <tbody>
-      <% @customers.each do |customer| %>
-      <%= content_tag :tr, id: dom_id(customer), class: dom_class(customer) do %>
-      
-
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= customer.first_name %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= customer.last_name %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= customer.email %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= customer.phone_number %></td>
-      
-      
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', customer %></td>
-      
-      <% end %>
+      <% @customers.each_with_index do |customer, index| %>
+        <% row_bg_color = index.even? ? "#FFFFFF" : "#fefefe" %>
+        <tr style="background-color: <%= row_bg_color %>;" 
+            class="hover:bg-[#f9ebd2] transition-colors duration-200">
+          <td class="border border-slate-300 p-4 text-[#762508];"><%= customer.first_name %></td>
+          <td class="border border-slate-300 p-4 text-[#762508];"><%= customer.last_name %></td>
+          <td class="border border-slate-300 p-4 text-[#762508];"><%= customer.email %></td>
+          <td class="border border-slate-300 p-4 text-[#762508];"><%= customer.phone_number %></td>
+          <td class="border border-slate-300 p-4 text-center">
+            <div class="flex items-center justify-start space-x-4">
+              <%= link_to 'Show', customer, 
+                    class: "px-3 py-1 rounded font-semibold", 
+                    style: "background-color: #f07422; color: #FFFFFF; border: 2px solid #c6a361;", 
+                    onmouseover: "this.style.background = '#F29F05';", 
+                    onmouseout: "this.style.background = '#f07422';" %>
+            </div>
+          </td>
+        </tr>
       <% end %>
     </tbody>
   </table>
-</div>
 </div>

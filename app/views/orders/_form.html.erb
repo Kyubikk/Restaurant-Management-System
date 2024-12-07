@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
   <h1 class="text-2xl font-bold mb-6 text-center" style="color: #762508;">New Order</h1>
 
   <%= form_with(model: order, local: true) do |form| %>
@@ -13,27 +13,33 @@
       </div>
     <% end %>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-      <div>
-        <%= form.label :reservation_id, "Reservation", class: "block text-gray-700 font-medium mb-2" %>
-        <%= form.select :reservation_id, 
-              options_for_select(Reservation.all.map { |r| ["Reservation ##{r.id} (Table ##{r.table.table_number})", r.id] }, selected: order.reservation_id), 
-              { prompt: "Select a Reservation" }, 
-              class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
-      </div>
+    <div class="mb-6">
+      <%= form.label :reservation_id, "Reservation", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.select :reservation_id, 
+            options_for_select(Reservation.all.map { |r| ["Reservation ##{r.id} (Table ##{r.table.table_number})", r.id] }, selected: order.reservation_id), 
+            { prompt: "Select a Reservation" }, 
+            class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+    </div>
 
-      <div>
-        <%= form.label :staff_id, "Staff", class: "block text-gray-700 font-medium mb-2" %>
-        <%= form.select :staff_id, 
-              options_for_select(Staff.all.map { |s| ["#{s.first_name} #{s.last_name}", s.id] }, selected: order.staff_id), 
-              { prompt: "Select a Staff" }, 
-              class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
-      </div>
+    <div class="mb-6">
+      <%= form.label :staff_id, "Staff", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.select :staff_id, 
+            options_for_select(Staff.all.map { |s| ["#{s.first_name} #{s.last_name}", s.id] }, selected: order.staff_id), 
+            { prompt: "Select a Staff" }, 
+            class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+    </div>
+
+    <!-- Table info -->
+    <div class="mb-6">
+      <%= form.label :table_id, "Table", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.select :table_id, 
+            options_for_select(Table.all.map { |t| ["Table ##{t.table_number}", t.id] }, selected: order.table_id), 
+            class: "border border-gray-300 rounded w-full py-2 px-3" %>
     </div>
 
     <div class="mb-6">
       <%= form.label :order_date, "Order Date", class: "block text-gray-700 font-medium mb-2" %>
-      <%= form.datetime_field :order_date, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+      <%= form.datetime_field :order_date, class: "border border-gray-300 rounded w-full py-2 px-3" %>
     </div>
 
     <div class="mb-6">
@@ -44,27 +50,21 @@
             <div>
               <%= item_fields.label :menu_item_id, "Menu Item", class: "block text-gray-700 font-medium mb-1" %>
               <%= item_fields.select :menu_item_id, 
-                    options_for_select(MenuItem.all.map { |m| ["#{m.name} - $#{m.price}", m.id] }), 
+                    options_for_select(MenuItem.all.map { |m| ["#{m.name} - $#{m.price}", m.id, { 'data-price': m.price }] }), 
                     { prompt: "Select Menu Item" }, 
-                    class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300" %>
+                    class: "border border-gray-300 rounded w-full py-2 px-3 menu-item-select" %>
             </div>
             <div>
               <%= item_fields.label :quantity, "Quantity", class: "block text-gray-700 font-medium mb-1" %>
-              <%= item_fields.number_field :quantity, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300", min: 1 %>
+              <%= item_fields.number_field :quantity, class: "border border-gray-300 rounded w-full py-2 px-3 quantity-field", min: 1 %>
             </div>
             <div>
-              <%= item_fields.label :price, "Price ($)", class: "block text-gray-700 font-medium mb-1" %>
-              <%= item_fields.text_field :price, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300", readonly: true %>
+              <%= item_fields.hidden_field :price, value: item_fields.object.menu_item&.price %>
             </div>
           </div>
         <% end %>
       </div>
       <%= link_to "Add Item", "#", id: "add-order-item", class: "text-blue-500 hover:underline text-sm mt-3 inline-block" %>
-    </div>
-
-    <div class="mb-6">
-      <%= form.label :total_amount, "Total Amount ($)", class: "block text-gray-700 font-medium mb-2" %>
-      <%= form.text_field :total_amount, class: "border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:ring focus:ring-orange-300", readonly: true, value: order.total_amount, id: "total_amount" %>
     </div>
 
     <div class="flex justify-end space-x-6"> 
@@ -81,3 +81,28 @@
   
   <% end %>
 </div>
+
+<script type="text/javascript">
+  document.getElementById('add-order-item').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Clone the first order item form
+    var orderItemClone = document.querySelector('#order-items-list .grid');
+    var newItem = orderItemClone.cloneNode(true);
+    
+    // Clear the values of the cloned fields
+    newItem.querySelectorAll('select, input').forEach(function(input) {
+      input.value = '';
+    });
+
+    // Update the names of the inputs to correctly reference the order_items array indices
+    var index = document.querySelectorAll('#order-items-list .grid').length;
+    newItem.querySelectorAll('select, input').forEach(function(input) {
+      var name = input.name.replace(/\[\d+\]/, "[" + index + "]");
+      input.name = name;
+    });
+
+    // Append the cloned item to the order items list
+    document.getElementById('order-items-list').appendChild(newItem);
+  });
+</script>

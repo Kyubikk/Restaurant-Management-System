@@ -18,7 +18,6 @@
         <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Reservation Date</th>
         <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Number of Guests</th>
         <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Table</th>
-        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Status</th>
         <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Actions</th>
       </tr>
     </thead>
@@ -34,25 +33,13 @@
           <td class="border border-slate-300 p-4 text-[#762508];"><%= reservation.reservation_date.strftime("%d-%m-%Y %H:%M") %></td>
           <td class="border border-slate-300 p-4 text-[#762508];"><%= reservation.number_of_guests %></td>
           <td class="border border-slate-300 p-4 text-[#762508];"><%= "Table ##{reservation.table.table_number}" %></td>
-          <td class="border border-slate-300 p-4 text-[#762508]; capitalize"><%= reservation.status %></td>
           <td class="border border-slate-300 p-4 text-center">
-            <div class="flex items-center justify-start space-x-2">
+            <div class="flex items-center justify-start space-x-4">
               <%= link_to 'Show', reservation, 
                     class: "px-3 py-1 rounded font-semibold", 
                     style: "background-color: #f07422; color: #FFFFFF; border: 2px solid #c6a361;", 
                     onmouseover: "this.style.background = '#F29F05';", 
                     onmouseout: "this.style.background = '#f07422';" %>
-              <%= link_to 'Edit', edit_reservation_path(reservation), 
-                    class: "px-3 py-1 rounded font-semibold", 
-                    style: "background-color: #1E90FF; color: #FFFFFF; border: 2px solid #c6a361;", 
-                    onmouseover: "this.style.background = '#F29F05';", 
-                    onmouseout: "this.style.background = '#1E90FF';" %>
-              <%= button_to 'Delete', reservation, method: :delete, 
-                    class: "px-3 py-1 rounded font-semibold", 
-                    style: "background-color: #FF6347; color: #FFFFFF; border: 2px solid #c6a361;", 
-                    data: { confirm: "Are you sure you want to delete this reservation?" }, 
-                    onmouseover: "this.style.background = '#F29F05';", 
-                    onmouseout: "this.style.background = '#FF6347';" %>
             </div>
           </td>
         </tr>

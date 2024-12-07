@@ -1,47 +1,63 @@
-
-
-
 <div class="container mx-auto px-4">
   <div class="flex items-center justify-between flex-wrap mb-6">
-    <h1 class="text-3xl font-bold">Orders</h1>
+    <h1 class="text-3xl font-bold" style="color: #762508;">Orders</h1>
 
-    <%= link_to new_order_path, class: button_class(theme: "primary"), style: "background-color: #762508; color: #FFFFFF;", onmouseover: "this.style.background = '#F29F05';", onmouseout: "this.style.background = '#762508';" do %>
-    Add New Order
+    <%= link_to new_order_path, 
+          class: "px-4 py-2 rounded font-semibold", 
+          style: "background-color: #762508; color: #FFFFFF; border: 2px solid #c6a361;", 
+          onmouseover: "this.style.background = '#F29F05';", 
+          onmouseout: "this.style.background = '#762508';" do %>
+      Add New Order
     <% end %>
   </div>
 
-  <table class="table-auto border-collapse border-slate-400 w-full">
-    <thead class="bg-slate-50 dark:bg-slate-700">
+  <table class="table-auto border-collapse w-full">
+    <thead style="background-color: #f6e4c5;">
       <tr>
-        
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Reservation</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Order date</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Staff</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Status</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Total amount</th>
-                
-          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
-        
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Table</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Reservation</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Order Date</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Staff</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Status</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Total Amount</th>
+        <th class="border border-slate-300 font-semibold p-4 text-left" style="color: #762508;">Actions</th>
       </tr>
     </thead>
 
     <tbody>
-      <% @orders.each do |order| %>
-      <%= content_tag :tr, id: dom_id(order), class: dom_class(order) do %>
-      
-
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.reservation %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.order_date %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.staff %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.status %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= order.total_amount %></td>
-      
-      
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', order %></td>
-      
-      <% end %>
+      <% @orders.each_with_index do |order, index| %>
+        <% row_bg_color = index.even? ? "#FFFFFF" : "#fefefe" %>
+        <tr style="background-color: <%= row_bg_color %>;" 
+            class="hover:bg-[#f9ebd2] transition-colors duration-200">
+          <td class="border border-slate-300 p-4 text-[#762508];">
+            Table <%= order.table.table_number %>
+          </td>
+          <td class="border border-slate-300 p-4 text-[#762508];">
+            <%= order.reservation ? "Reservation ##{order.reservation.id}" : "No reservation" %>
+          </td>
+          <td class="border border-slate-300 p-4 text-[#762508];">
+            <%= order.order_date.strftime("%d-%m-%Y %H:%M") %>
+          </td>
+          <td class="border border-slate-300 p-4 text-[#762508];">
+            <%= "#{order.staff.first_name} #{order.staff.last_name}" %>
+          </td>
+          <td class="border border-slate-300 p-4 text-[#762508]; capitalize">
+            <%= order.status %>
+          </td>
+          <td class="border border-slate-300 p-4 text-[#762508];">
+            <%= number_to_currency(order.total_amount) %>
+          </td>
+          <td class="border border-slate-300 p-4 text-center">
+            <div class="flex items-center justify-start space-x-4">
+              <%= link_to 'Show', order, 
+                    class: "px-3 py-1 rounded font-semibold", 
+                    style: "background-color: #f07422; color: #FFFFFF; border: 2px solid #c6a361;", 
+                    onmouseover: "this.style.background = '#F29F05';", 
+                    onmouseout: "this.style.background = '#f07422';" %>
+            </div>
+          </td>
+        </tr>
       <% end %>
     </tbody>
   </table>
-</div>
 </div>

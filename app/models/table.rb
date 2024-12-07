@@ -1,4 +1,5 @@
 class Table < ApplicationRecord
+  has_many :orders
   enum status: { available: 'available', occupied: 'occupied', reserved: 'reserved' }
 
   # Associations

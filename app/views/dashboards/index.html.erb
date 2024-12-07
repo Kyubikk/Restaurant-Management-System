@@ -1,0 +1,50 @@
+<div class="container mx-auto px-4">
+  <h1 class="text-3xl font-bold mb-6 text-[#762508]">Dashboard</h1>
+
+  <!-- Top stats -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <!-- Revenue -->
+    <div class="bg-[#f6e4c5] p-6 rounded-lg shadow-lg">
+      <h3 class="text-sm font-semibold text-[#762508] uppercase">Revenue (Last 120 Days)</h3>
+      <p class="text-lg font-bold text-[#f07422] mt-2"><%= number_to_currency(@revenue_over_time.values.sum) %></p>
+    </div>
+
+    <!-- Top-Selling Item -->
+    <div class="p-6"></div>
+    <div class="bg-[#f6e4c5] p-6 rounded-lg shadow-lg">
+      <h3 class="text-sm font-semibold text-[#762508] uppercase">Top-Selling Item</h3>
+      <p class="text-lg font-bold text-[#f07422] mt-2">
+        <%= @top_selling_items.sort_by { |_, qty| -qty }.first&.first || 'N/A' %>
+      </p>
+    </div>
+
+    <!-- Best Table -->
+    <div class="p-6"></div>
+    <div class="bg-[#f6e4c5] p-6 rounded-lg shadow-lg">
+      <h3 class="text-sm font-semibold text-[#762508] uppercase">Top-Earning Table</h3>
+      <p class="text-lg font-bold text-[#f07422] mt-2">
+        <%= @revenue_by_table.sort_by { |_, revenue| -revenue }.first&.first || 'N/A' %>
+      </p>
+    </div>
+
+    <!-- Peak Reservation Hour -->
+    <div class="p-6"></div>
+    <div class="bg-[#f6e4c5] p-6 rounded-lg shadow-lg">
+      <h3 class="text-sm font-semibold text-[#762508] uppercase">Peak Reservation Hour</h3>
+      <p class="text-lg font-bold text-[#f07422] mt-2">
+        <%= @reservations_by_time.max_by { |hour, count| count }&.first || 'N/A' %>:00
+      </p>
+    </div>
+  </div>
+
+  <!-- Top-Selling Items -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb-3 text-[#762508]">Top-Selling Items</h2>
+    <%= bar_chart @top_selling_items, height: "400px", colors: ["#f07422"] %>
+  </div>
+
+  <!-- Revenue by Table -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb-3 text-[#762508]">Revenue by Table</h2>
+    <%= pie_chart @revenue_by_table, height: "400px", colors: ["#762508", "#f6e4c5", "#c6a361", "#f07422", "#fefefe"] %>
+  </div>

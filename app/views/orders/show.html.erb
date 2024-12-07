@@ -1,74 +1,79 @@
 <div class="max-w-3xl mx-auto px-4">
+  <!-- Header Section -->
   <div class="flex items-center justify-between">
-    <h1 class="flex-1 font-bold text-3xl">Order</h1>
+    <h1 class="flex-1 font-bold text-3xl" style="color: #762508;">Order #<%= @order.id %></h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
-      <%= link_to orders_path, class: button_class(theme: "transparent") do %>
-      All Orders
+      <%= link_to orders_path, class: button_class(theme: "transparent"), style: "color: #762508; border: 2px solid #762508; padding: 8px 16px; border-radius: 4px;" do %>
+        All Orders
       <% end %>
-      <%= link_to edit_order_path(@order), class: button_class(theme:"primary") do %>
-      Edit
+      <%= link_to edit_order_path(@order), class: button_class(theme: "primary"), style: "background-color: #762508; color: #fefefe; padding: 8px 16px; border-radius: 4px;", onmouseover: "this.style.background = '#f07422';", onmouseout: "this.style.background = '#762508';" do %>
+        Edit
       <% end %>
     </div>
   </div>
 
-  <ul class="text-slate-700">
+  <div class="my-6 p-4">
+  </div>
+
+  <!-- Order Info Section -->
+  <div class="my-6 p-4 border rounded-lg shadow-lg" style="background-color: #f6e4c5; border-color: #c6a361;">
+    <ul class="text-slate-700 space-y-4">
+      <!-- Reservation info -->
       <li>
-        <p class="font-semibold">Reservation:</p>
-        <p><%= @order.reservation %></p>
+        <p class="font-semibold" style="color: #762508;">Reservation:</p>
+        <p><%= @order.reservation ? "Reservation ##{@order.reservation.id}" : "No reservation" %></p>
       </li>
-      <li><div class="max-w-3xl mx-auto px-4">
-      <div class="flex items-center justify-between">
-        <h1 class="flex-1 font-bold text-3xl">Order</h1>
-    
-        <div class="flex-wrap lg:flex items-center lg:space-x-3">
-          <%= link_to orders_path, class: button_class(theme: "transparent") do %>
-          All Orders
-          <% end %>
-          <%= link_to edit_order_path(@order), class: button_class(theme:"primary") do %>
-          Edit
-          <% end %>
-        </div>
-      </div>
-    
-      <ul class="text-slate-700">
-          <li>
-            <p class="font-semibold">Reservation:</p>
-            <p><%= @order.reservation %></p>
+
+      <!-- Order Date info -->
+      <li>
+        <p class="font-semibold" style="color: #762508;">Order Date:</p>
+        <p><%= @order.order_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </li>
+
+      <!-- Staff info -->
+      <li>
+        <p class="font-semibold" style="color: #762508;">Staff:</p>
+        <p><%= @order.staff.present? ? "#{@order.staff.first_name} #{@order.staff.last_name}" : "No staff assigned" %></p>
+      </li>
+
+      <!-- Table info -->
+      <li>
+        <p class="font-semibold" style="color: #762508;">Table:</p>
+        <p>Table <%= @order.table.table_number %></p>
+      </li>
+
+      <!-- Status info -->
+      <li>
+        <p class="font-semibold" style="color: #762508;">Status:</p>
+        <p><%= @order.status.capitalize %></p>
+      </li>
+
+      <!-- Total Amount info -->
+      <li>
+        <p class="font-semibold" style="color: #762508;">Total Amount:</p>
+        <p><%= number_to_currency(@order.total_amount) %></p>
+      </li>
+    </ul>
+  </div>
+  
+
+  <!-- Order Items Section -->
+  <div class="my-6 p-4">
+  </div>
+  <div class="my-6 p-4 border rounded-lg shadow-lg mt-8" style="background-color: #f6e4c5; border-color: #c6a361;">
+    <h2 class="font-bold text-xl" style="color: #762508;">Order Items</h2>
+    <% if @order.order_items.any? %>
+      <ul class="space-y-4 mt-4">
+        <% @order.order_items.each do |item| %>
+          <li class="flex justify-between">
+            <p style="color: #762508;"><%= item.menu_item.name %> (x<%= item.quantity %>)</p>
+            <p style="color: #c6a361;"><%= number_to_currency(item.quantity * item.price) %></p>
           </li>
-          <li>
-            <p class="font-semibold">Order date:</p>
-            <p><%= @order.order_date %></p>
-          </li>
-          <li>
-            <p class="font-semibold">Staff:</p>
-            <p><%= @order.staff %></p>
-          </li>
-          <li>
-            <p class="font-semibold">Status:</p>
-            <p><%= @order.status %></p>
-          </li>
-          <li>
-            <p class="font-semibold">Total amount:</p>
-            <p><%= @order.total_amount %></p>
-          </li>
+        <% end %>
       </ul>
-    </div>
-    
-        <p class="font-semibold">Order date:</p>
-        <p><%= @order.order_date %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Staff:</p>
-        <p><%= @order.staff %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Status:</p>
-        <p><%= @order.status %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Total amount:</p>
-        <p><%= @order.total_amount %></p>
-      </li>
-  </ul>
+    <% else %>
+      <p class="text-center text-gray-500" style="color: #762508;">No items in this order</p>
+    <% end %>
+  </div>
 </div>

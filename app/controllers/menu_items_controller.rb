@@ -1,5 +1,5 @@
 class MenuItemsController < ApplicationController
-  before_action :set_menu_item, only: %i[ show edit update destroy ]
+  before_action :set_menu_item, only: %i[show edit update destroy]
 
   # GET /menu_items or /menu_items.json
   def index
@@ -8,8 +8,7 @@ class MenuItemsController < ApplicationController
   
   # GET /menu_items/1 or /menu_items/1.json
   def show
-    @menu_item = MenuItem.find(params[:id])
-    render json: { price: @menu_item.price }
+    # Không cần tìm lại @menu_item vì đã dùng callback
   end
 
   # GET /menu_items/new
@@ -27,7 +26,7 @@ class MenuItemsController < ApplicationController
 
     respond_to do |format|
       if @menu_item.save
-        format.html { redirect_to menu_item_url(@menu_item), notice: "Menu item was successfully created." }
+        format.html { redirect_to @menu_item, notice: "Menu item was successfully created." }
         format.json { render :show, status: :created, location: @menu_item }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +39,7 @@ class MenuItemsController < ApplicationController
   def update
     respond_to do |format|
       if @menu_item.update(menu_item_params)
-        format.html { redirect_to menu_item_url(@menu_item), notice: "Menu item was successfully updated." }
+        format.html { redirect_to @menu_item, notice: "Menu item was successfully updated." }
         format.json { render :show, status: :ok, location: @menu_item }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +51,6 @@ class MenuItemsController < ApplicationController
   # DELETE /menu_items/1 or /menu_items/1.json
   def destroy
     @menu_item.destroy
-
     respond_to do |format|
       format.html { redirect_to menu_items_url, notice: "Menu item was successfully destroyed." }
       format.json { head :no_content }
@@ -60,12 +58,13 @@ class MenuItemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_menu_item
       @menu_item = MenuItem.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to menu_items_path, alert: "Menu item not found"
     end
 
-    # Only allow a list of trusted parameters through.
     def menu_item_params
       params.require(:menu_item).permit(:name, :price, :cate_id, :image)
     end

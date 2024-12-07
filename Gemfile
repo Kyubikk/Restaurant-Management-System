@@ -82,3 +82,5 @@ gem 'attach', '~> 1.0.1'
 gem "chartkick"
 gem "groupdate", "~> 6.5"
 
+
+gem "webpacker", "~> 5.4"
