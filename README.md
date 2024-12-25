@@ -1,25 +1,51 @@
-# README
-## Starting server
+# 🍴 Restaurant Management System
 
-- Run on your terminal `docker-compose up`
-- Open browser at http://localhost:3000/
-- Continue your work on a new terminal tab. Leave this terminal tab open until you want to stop the server.
+## 📝 Overview
+The **Restaurant Management System** is a comprehensive solution designed to streamline restaurant operations. It helps manage menus, orders, table reservations, billing, and more, all in a user-friendly interface.
 
-## Stop server
+## 🌟 Features
+- 📋 **Menu Management:** Easily add, edit, and remove menu items.
+- 🛒 **Order Processing:** Track orders efficiently and update their status in real-time.
+- 🪑 **Table Reservations:** Manage table bookings with ease.
 
-`CTRL + C`
+## 🛠️ Technologies Used
+- **Backend:** Ruby on Rails
+- **Database:** PostgreSQL
+- **Containerization:** Docker
+- **Frontend:** HTML, CSS, JavaScript
 
-### Bundle install
-Installing required libraries, you can run this command multiple time. If there is an error, let make sure this command has been executed successfully.
+## 📥 Installation
 
-`bundle install`
+1. **Prerequisites:**
+   - Ruby 3.0 or higher
+   - Docker and Docker Compose
+   - PostgreSQL
 
-### Migrate database
+2. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/Kyubikk/Restaurant-Management-System.git
+   ```
 
-`rails db:migrate`
+3. **Set Up the Environment:**
+   - Navigate to the project directory:
+     ```bash
+     cd Restaurant-Management-System
+     ```
+   - Build and run the Docker containers:
+     ```bash
+     docker-compose up --build
+     ```
 
-## Optional
+4. **Set Up the Database:**
+   - Run database migrations:
+     ```bash
+     docker-compose run web rake db:create db:migrate
+     ```
 
-### Rails console
-
-`rails c`
+5. **Run the Application:**
+   - Start the Rails server:
+     ```bash
+     docker-compose up
+     ```
+   - Access the application at `http://localhost:3000`.
+---
